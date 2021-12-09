@@ -8,29 +8,28 @@ public class Masu : MonoBehaviour
     public bool isRed = false;
     public int[] position = new int[2];
     public GameObject notteruKoma;
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
     public void Clicked(){
         if(isYellow){
             Koma.ResetBoard();
             Koma komaScript = PlayerCtrl.selectedKoma.GetComponent<Koma>();
+            if(komaScript.isMochiGoma){
+                PlayerCtrl.mochiGoma.Remove(PlayerCtrl.selectedKoma);
+                komaScript.isMochiGoma = false;
+                komaScript.wasJustMochiGoma = true;
+            }
             komaScript.MoveTo(position);
-            PlayerCtrl.isMyTurn = false;
+            // PlayerCtrl.isMyTurn = false;
         }
         else if(isRed){
             Koma.ResetBoard();
             Koma komaScript = PlayerCtrl.selectedKoma.GetComponent<Koma>();
+            Koma notteruKomaScript = notteruKoma.GetComponent<Koma>();
+            notteruKomaScript.isMochiGoma = true;
+            notteruKomaScript.Init();
             notteruKoma.transform.Rotate(0,0,180);
             PlayerCtrl.GetKoma(notteruKoma);
             komaScript.MoveTo(position);
-            PlayerCtrl.isMyTurn = false;
+            // PlayerCtrl.isMyTurn = false;
         }
     }
 }

@@ -4,24 +4,37 @@ using UnityEngine;
 
 public class Koma : MonoBehaviour
 {
+    public bool wasJustMochiGoma;
+    public bool isMochiGoma;
     public GameObject naruCanvas;
     public bool canNaru;
-    bool askedIfNaru = false;
+    public bool askedIfNaru = false;
     public bool isKing;
     public bool isPlayersKoma;
+    public bool[,] currentMovementPossible;
     public bool[,] movementPossible;
     public bool[,] movementPossibleAlt;
+    Sprite normalSprite;
     public Sprite altSprite;
     public int[] initPosition = new int[2];
-    int[] position = new int[2];
+    int[] position = new int[2]{-1,-1};
     int[,,] movement = new int[,,]{
         {{ -1, 1 },{ 0, 1 },{ 1, 1 }},
         {{ -1, 0 },{ 0, 0 },{ 1, 0 }},
         {{ -1,-1 },{ 0,-1 },{ 1,-1 }},
     };
+    bool naruOnNextMove;
     public void Start()
     {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();  
+        normalSprite = spriteRenderer.sprite;
         MoveTo(initPosition);
+    }
+    public void Init(){
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();  
+        spriteRenderer.sprite = normalSprite;
+        currentMovementPossible = movementPossible;
+        askedIfNaru = false;
     }
 
     void Update()
@@ -39,25 +52,36 @@ public class Koma : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                bool isPossible = movementPossible[i,j];
-                if(!isPlayersKoma) isPossible = movementPossible[2-i,2-j];
-                if(isPossible){
-                    int newX = position[0]+movement[i,j,0];
-                    int newY = position[1]+movement[i,j,1];
-                    if(newX>=0&&newY>=0&&newX<=2&&newY<=2){
-                        Masu masuScript = Board.BoardMap[newX,newY].GetComponent<Masu>();
-                        Renderer masuRenderer = Board.BoardMap[newX,newY].GetComponent<Renderer>();
-                        Color yellow = new Color(1f,1f,0f,1.0f);
-                        Color red = new Color(1f,0f,0f,1.0f);
-                        if(masuScript.notteruKoma==null){
-                            masuRenderer.material.SetColor("_Color", yellow);
-                            masuScript.isYellow = true;
-                        }
-                        else{
-                            Koma komaScript = masuScript.notteruKoma.GetComponent<Koma>();
-                            if(!komaScript.isPlayersKoma){
-                                masuRenderer.material.SetColor("_Color", red);
-                                masuScript.isRed = true;
+                if(isMochiGoma){
+                    Masu masuScript = Board.BoardMap[i,j].GetComponent<Masu>();
+                    Renderer masuRenderer = Board.BoardMap[i,j].GetComponent<Renderer>();
+                    Color yellow = new Color(1f,1f,0f,1.0f);
+                    if(masuScript.notteruKoma==null){
+                        masuRenderer.material.SetColor("_Color", yellow);
+                        masuScript.isYellow = true;
+                    }
+                }
+                else{
+                    bool isPossible = currentMovementPossible[i,j];
+                    if(!isPlayersKoma) isPossible = currentMovementPossible[2-i,2-j];
+                    if(isPossible){
+                        int newX = position[0]+movement[i,j,0];
+                        int newY = position[1]+movement[i,j,1];
+                        if(newX>=0&&newY>=0&&newX<=2&&newY<=2){
+                            Masu masuScript = Board.BoardMap[newX,newY].GetComponent<Masu>();
+                            Renderer masuRenderer = Board.BoardMap[newX,newY].GetComponent<Renderer>();
+                            Color yellow = new Color(1f,1f,0f,1.0f);
+                            Color red = new Color(1f,0f,0f,1.0f);
+                            if(masuScript.notteruKoma==null){
+                                masuRenderer.material.SetColor("_Color", yellow);
+                                masuScript.isYellow = true;
+                            }
+                            else{
+                                Koma komaScript = masuScript.notteruKoma.GetComponent<Koma>();
+                                if(!komaScript.isPlayersKoma){
+                                    masuRenderer.material.SetColor("_Color", red);
+                                    masuScript.isRed = true;
+                                }
                             }
                         }
                     }
@@ -82,24 +106,31 @@ public class Koma : MonoBehaviour
     }
     public void MoveTo(int[] pos)
     {
-        Masu masuScript = Board.BoardMap[position[0],position[1]].GetComponent<Masu>();
-        masuScript.notteruKoma = null;
+        if(position[0]!=-1){
+            Masu masuScript = Board.BoardMap[position[0],position[1]].GetComponent<Masu>();
+            masuScript.notteruKoma = null;  
+        }
         Masu newMasuScript = Board.BoardMap[pos[0],pos[1]].GetComponent<Masu>();
         newMasuScript.notteruKoma = gameObject;
         transform.position = Board.BoardMap[pos[0],pos[1]].transform.position;
         position = new int[]{pos[0],pos[1]};
-        if(isPlayersKoma&&pos[1]==2&&!askedIfNaru){
+        if((isPlayersKoma&&pos[1]==2&&!askedIfNaru)||naruOnNextMove){
             if(canNaru){
-                PlayerCtrl.isWaiting = true;
-                naruCanvas.SetActive(true);
-                askedIfNaru = true;
-                PlayerCtrl.naruKamoKoma = gameObject;
+                if(wasJustMochiGoma) naruOnNextMove = true;
+                else{
+                    PlayerCtrl.isWaiting = true;
+                    naruCanvas.SetActive(true);
+                    askedIfNaru = true;
+                    PlayerCtrl.naruKamoKoma = gameObject;
+                    naruOnNextMove = false;
+                }
             }
         }
+        if(wasJustMochiGoma)wasJustMochiGoma=false;
     }
 
     public void Naru(){
-        movementPossible = movementPossibleAlt;
+        currentMovementPossible = movementPossibleAlt;
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();  
         spriteRenderer.sprite = altSprite;
         PlayerCtrl.isWaiting = false;

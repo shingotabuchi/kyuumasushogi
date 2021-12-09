@@ -19,5 +19,6 @@ public class Gin : Koma
             {true,false,true},
             {false,true,false},
         };
+        currentMovementPossible = movementPossible;
     }
 }

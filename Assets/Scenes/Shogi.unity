@@ -806,7 +806,7 @@ Transform:
   - {fileID: 2030400077}
   - {fileID: 1022122301}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &376366256
 MonoBehaviour:
@@ -944,8 +944,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8e4d5a8eb5d03c439099f9d86e61335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  naruCanvas: {fileID: 0}
+  wasJustMochiGoma: 0
+  isMochiGoma: 0
+  naruCanvas: {fileID: 1719524519}
   canNaru: 0
+  askedIfNaru: 0
   isKing: 1
   isPlayersKoma: 0
   altSprite: {fileID: 0}
@@ -1026,7 +1029,7 @@ Transform:
   m_LocalScale: {x: 0.54488957, y: 0.54488957, z: 0.54488957}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &529692411
 GameObject:
@@ -1192,8 +1195,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc6df6c20dcda643bd91983346cf4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  naruCanvas: {fileID: 0}
+  wasJustMochiGoma: 0
+  isMochiGoma: 0
+  naruCanvas: {fileID: 1719524519}
   canNaru: 0
+  askedIfNaru: 0
   isKing: 0
   isPlayersKoma: 0
   altSprite: {fileID: 21300000, guid: 36b904adc15b77644b5771aca5382be9, type: 3}
@@ -1274,7 +1280,7 @@ Transform:
   m_LocalScale: {x: 0.5448896, y: 0.5448896, z: 0.5448896}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &801313007
 GameObject:
@@ -1317,12 +1323,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 801313007}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.3432641, y: -1.3494176, z: -2.9591508}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &821918386 stripped
 GameObject:
@@ -1624,7 +1630,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &873734604 stripped
 GameObject:
@@ -1662,8 +1668,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c720cdae9e454c7499684c11dce08553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  naruCanvas: {fileID: 0}
+  wasJustMochiGoma: 0
+  isMochiGoma: 0
+  naruCanvas: {fileID: 1719524519}
   canNaru: 0
+  askedIfNaru: 0
   isKing: 0
   isPlayersKoma: 0
   altSprite: {fileID: 21300000, guid: 7080ca24a26bcca43af3744743e23067, type: 3}
@@ -1744,7 +1753,7 @@ Transform:
   m_LocalScale: {x: 0.5448896, y: 0.5448896, z: 0.5448896}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &1022122300
 GameObject:
@@ -2071,7 +2080,7 @@ RectTransform:
   - {fileID: 529692412}
   - {fileID: 832124542}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2191,6 +2200,49 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9999999, y: 0.9999999, z: 0.19999997}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1809134519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1809134521}
+  - component: {fileID: 1809134520}
+  m_Layer: 0
+  m_Name: AICtrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1809134520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809134519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9d81af0121d3e5409ec4b4b5e3e5652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1809134521
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809134519}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.85046506, y: -1.383953, z: -135.62434}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2030400076
 GameObject:
   m_ObjectHideFlags: 0
@@ -2368,7 +2420,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2096818442
 GameObject:
@@ -2527,7 +2579,7 @@ PrefabInstance:
       objectReference: {fileID: 1719524519}
     - target: {fileID: 5108965663271341357, guid: 03a87b3235757224296822b2127779d7, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5108965663271341357, guid: 03a87b3235757224296822b2127779d7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2580,7 +2632,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6640993326646253625, guid: a5c7812abefd4c54d9d53c6f6a3dc55d, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6640993326646253625, guid: a5c7812abefd4c54d9d53c6f6a3dc55d, type: 3}
       propertyPath: m_LocalPosition.x

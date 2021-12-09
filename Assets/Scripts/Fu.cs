@@ -19,5 +19,6 @@ public class Fu : Koma
             {true,false,true},
             {false,true,false},
         };
+        currentMovementPossible = movementPossible;
     }
 }

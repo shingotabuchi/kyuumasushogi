@@ -13,5 +13,6 @@ public class King : Koma
             {true,true,true},
         };
         isKing = true;
+        currentMovementPossible = movementPossible;
     }
 }
