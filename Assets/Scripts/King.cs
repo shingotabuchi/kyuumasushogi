@@ -14,8 +14,4 @@ public class King : Koma
         };
         isKing = true;
     }
-    void Update()
-    {
-        
-    }
 }

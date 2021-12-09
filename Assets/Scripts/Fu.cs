@@ -13,11 +13,11 @@ public class Fu : Koma
             {false,false,false},
             {false,false,false},
         };
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        canNaru = true;
+        movementPossibleAlt = new bool[,]{
+            {true,true,true},
+            {true,false,true},
+            {false,true,false},
+        };
     }
 }

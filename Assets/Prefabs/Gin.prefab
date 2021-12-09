@@ -109,5 +109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c720cdae9e454c7499684c11dce08553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  naruCanvas: {fileID: 0}
+  canNaru: 1
+  isKing: 0
   isPlayersKoma: 0
+  altSprite: {fileID: 21300000, guid: 7080ca24a26bcca43af3744743e23067, type: 3}
   initPosition: 0100000000000000

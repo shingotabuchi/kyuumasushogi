@@ -13,11 +13,11 @@ public class Gin : Koma
             {false,false,false},
             {true,false,true},
         };
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        canNaru = true;
+        movementPossibleAlt = new bool[,]{
+            {true,true,true},
+            {true,false,true},
+            {false,true,false},
+        };
     }
 }

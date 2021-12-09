@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Koma : MonoBehaviour
 {
+    public GameObject naruCanvas;
+    public bool canNaru;
+    bool askedIfNaru = false;
     public bool isKing;
     public bool isPlayersKoma;
     public bool[,] movementPossible;
+    public bool[,] movementPossibleAlt;
+    public Sprite altSprite;
     public int[] initPosition = new int[2];
     int[] position = new int[2];
     int[,,] movement = new int[,,]{
@@ -23,17 +28,6 @@ public class Koma : MonoBehaviour
     {
         
     }
-    // void OnMouseOver()
-    // {
-    //     print("koma");
-    //     if(Input.GetMouseButton(0)){
-    //         if(PlayerCtrl.isMyTurn){
-    //             ResetBoard();
-    //             ShowPossibleMovement();
-    //             PlayerCtrl.selectedKoma = gameObject;
-    //         }
-    //     }
-    // }
     public void Clicked(){
         ResetBoard();
         ShowPossibleMovement();
@@ -50,7 +44,7 @@ public class Koma : MonoBehaviour
                 if(isPossible){
                     int newX = position[0]+movement[i,j,0];
                     int newY = position[1]+movement[i,j,1];
-                    if(newX>=0&&newY>=0){
+                    if(newX>=0&&newY>=0&&newX<=2&&newY<=2){
                         Masu masuScript = Board.BoardMap[newX,newY].GetComponent<Masu>();
                         Renderer masuRenderer = Board.BoardMap[newX,newY].GetComponent<Renderer>();
                         Color yellow = new Color(1f,1f,0f,1.0f);
@@ -82,16 +76,37 @@ public class Koma : MonoBehaviour
                 masuRenderer.material.SetColor("_Color", white);
                 Masu masuScript = Board.BoardMap[i,j].GetComponent<Masu>();
                 masuScript.isYellow = false;
+                masuScript.isRed = false;
             }
         }
     }
     public void MoveTo(int[] pos)
     {
-        Masu masuScript = Board.BoardMap[pos[0],pos[1]].GetComponent<Masu>();
+        Masu masuScript = Board.BoardMap[position[0],position[1]].GetComponent<Masu>();
         masuScript.notteruKoma = null;
         Masu newMasuScript = Board.BoardMap[pos[0],pos[1]].GetComponent<Masu>();
         newMasuScript.notteruKoma = gameObject;
         transform.position = Board.BoardMap[pos[0],pos[1]].transform.position;
         position = new int[]{pos[0],pos[1]};
+        if(isPlayersKoma&&pos[1]==2&&!askedIfNaru){
+            if(canNaru){
+                PlayerCtrl.isWaiting = true;
+                naruCanvas.SetActive(true);
+                askedIfNaru = true;
+                PlayerCtrl.naruKamoKoma = gameObject;
+            }
+        }
+    }
+
+    public void Naru(){
+        movementPossible = movementPossibleAlt;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();  
+        spriteRenderer.sprite = altSprite;
+        PlayerCtrl.isWaiting = false;
+        naruCanvas.SetActive(false);
+    }
+    public void Naranai(){
+        PlayerCtrl.isWaiting = false;
+        naruCanvas.SetActive(false);
     }
 }

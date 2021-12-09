@@ -24,5 +24,13 @@ public class Masu : MonoBehaviour
             komaScript.MoveTo(position);
             PlayerCtrl.isMyTurn = false;
         }
+        else if(isRed){
+            Koma.ResetBoard();
+            Koma komaScript = PlayerCtrl.selectedKoma.GetComponent<Koma>();
+            notteruKoma.transform.Rotate(0,0,180);
+            PlayerCtrl.GetKoma(notteruKoma);
+            komaScript.MoveTo(position);
+            PlayerCtrl.isMyTurn = false;
+        }
     }
 }
