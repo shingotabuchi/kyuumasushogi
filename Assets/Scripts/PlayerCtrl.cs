@@ -6,7 +6,11 @@ public class PlayerCtrl : MonoBehaviour
 {
     static public bool isWaiting = false;
     static public bool isMyTurn = true;
-    public List<GameObject> myKomas = new List<GameObject>(10);
+    public int initKomaCount;
+    static public int stInitKomaCount;
+    public GameObject[] initKomaArray;
+    static public GameObject[] stInitKomaArray;
+    static public List<GameObject> myKomas = new List<GameObject>(10);
     static public List<GameObject> mochiGoma = new List<GameObject>(10);
     static public GameObject selectedKoma;
     public GameObject mochiGomaPositionMarkerObject;
@@ -14,14 +18,28 @@ public class PlayerCtrl : MonoBehaviour
     static public GameObject naruKamoKoma;
     void Start()
     {
-        for (int i = 0; i < myKomas.Count; i++)
+        stInitKomaArray = initKomaArray;
+        stInitKomaCount = initKomaCount;
+        for (int i = 0; i < initKomaCount; i++)
         {
-            Koma komaScript = myKomas[i].GetComponent<Koma>();
+            Koma komaScript = initKomaArray[i].GetComponent<Koma>();
+            myKomas.Add(initKomaArray[i]);
             komaScript.isPlayersKoma = true;
         }
         mochiGomaPositionMarker = mochiGomaPositionMarkerObject.transform.position;
     }
-
+    static public void Init()
+    {
+        myKomas.Clear();
+        for (int i = 0; i < stInitKomaCount; i++)
+        {
+            Koma komaScript = stInitKomaArray[i].GetComponent<Koma>();
+            myKomas.Add(stInitKomaArray[i]);
+            komaScript.isPlayersKoma = true;
+            stInitKomaArray[i].transform.eulerAngles = new Vector3(0,0,0); 
+        }
+        mochiGoma.Clear();
+    }
     void Update()
     {
         if(isWaiting)return;
@@ -48,9 +66,9 @@ public class PlayerCtrl : MonoBehaviour
             }
         }
     }
-
     static public void GetKoma(GameObject aquiredKoma){
         mochiGoma.Add(aquiredKoma);
+        myKomas.Add(aquiredKoma);
         UpdateMochiGoma();
     }
     static void UpdateMochiGoma()

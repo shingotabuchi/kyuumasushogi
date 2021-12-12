@@ -18,7 +18,7 @@ public class Masu : MonoBehaviour
                 komaScript.wasJustMochiGoma = true;
             }
             komaScript.MoveTo(position);
-            // PlayerCtrl.isMyTurn = false;
+            PlayerCtrl.isMyTurn = false;
         }
         else if(isRed){
             Koma.ResetBoard();
@@ -27,9 +27,13 @@ public class Masu : MonoBehaviour
             notteruKomaScript.isMochiGoma = true;
             notteruKomaScript.Init();
             notteruKoma.transform.Rotate(0,0,180);
+            AICtrl.myKomas.Remove(notteruKoma);
             PlayerCtrl.GetKoma(notteruKoma);
             komaScript.MoveTo(position);
-            // PlayerCtrl.isMyTurn = false;
+            PlayerCtrl.isMyTurn = false;
         }
+    }
+    public void ResetMasu(){
+        notteruKoma = null;
     }
 }

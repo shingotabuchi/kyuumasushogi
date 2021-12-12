@@ -17,29 +17,33 @@ public class Koma : MonoBehaviour
     Sprite normalSprite;
     public Sprite altSprite;
     public int[] initPosition = new int[2];
-    int[] position = new int[2]{-1,-1};
-    int[,,] movement = new int[,,]{
+    public int[] position = new int[2]{-1,-1};
+    static public int[,,] movement = new int[,,]{
         {{ -1, 1 },{ 0, 1 },{ 1, 1 }},
         {{ -1, 0 },{ 0, 0 },{ 1, 0 }},
         {{ -1,-1 },{ 0,-1 },{ 1,-1 }},
     };
-    bool naruOnNextMove;
+    public bool naruOnNextMove;
     public void Start()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();  
         normalSprite = spriteRenderer.sprite;
         MoveTo(initPosition);
     }
+    public void ResetKoma(){
+        currentMovementPossible = movementPossible;
+        isMochiGoma = false;
+        Init();
+        MoveTo(initPosition);
+    }
     public void Init(){
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();  
         spriteRenderer.sprite = normalSprite;
         currentMovementPossible = movementPossible;
+        wasJustMochiGoma = false;
         askedIfNaru = false;
-    }
-
-    void Update()
-    {
-        
+        naruOnNextMove = false;
+        position = new int[2]{-1,-1};
     }
     public void Clicked(){
         ResetBoard();
@@ -114,11 +118,13 @@ public class Koma : MonoBehaviour
         newMasuScript.notteruKoma = gameObject;
         transform.position = Board.BoardMap[pos[0],pos[1]].transform.position;
         position = new int[]{pos[0],pos[1]};
-        if((isPlayersKoma&&pos[1]==2&&!askedIfNaru)||naruOnNextMove){
+        if(isPlayersKoma&&((isPlayersKoma&&pos[1]==2&&!askedIfNaru)||naruOnNextMove)){
             if(canNaru){
                 if(wasJustMochiGoma) naruOnNextMove = true;
                 else{
                     PlayerCtrl.isWaiting = true;
+                    print(gameObject);
+                    print(isPlayersKoma);
                     naruCanvas.SetActive(true);
                     askedIfNaru = true;
                     PlayerCtrl.naruKamoKoma = gameObject;
@@ -128,6 +134,28 @@ public class Koma : MonoBehaviour
         }
         if(wasJustMochiGoma)wasJustMochiGoma=false;
     }
+    public void AIMoveTo(int[] pos, bool naru)
+    {
+        if(position[0]!=-1){
+            Masu masuScript = Board.BoardMap[position[0],position[1]].GetComponent<Masu>();
+            masuScript.notteruKoma = null;  
+        }
+        Masu newMasuScript = Board.BoardMap[pos[0],pos[1]].GetComponent<Masu>();
+        newMasuScript.notteruKoma = gameObject;
+        transform.position = Board.BoardMap[pos[0],pos[1]].transform.position;
+        position = new int[]{pos[0],pos[1]};
+        if(naru){
+            Naru();
+            askedIfNaru = true;
+            naruOnNextMove = false;
+        }
+        if(naruOnNextMove)naruOnNextMove = false;
+        if(wasJustMochiGoma){
+            if(pos[1]==0&&canNaru)naruOnNextMove = true;
+            wasJustMochiGoma=false;
+        }
+    }
+
 
     public void Naru(){
         currentMovementPossible = movementPossibleAlt;
